@@ -53,8 +53,7 @@ a:hover {
     color: #0094c7;
 }
 
-/* Specific class for the game button */
-.game-link {
+.button-link {
     display: inline-block;
     margin-top: 30px;
     padding: 12px 24px;
@@ -66,7 +65,7 @@ a:hover {
     transition: background-color 0.3s ease;
 }
 
-.game-link:hover {
+.button-link:hover {
     background-color: #0094c7;
     color: white;
 }

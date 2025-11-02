@@ -222,3 +222,41 @@ body,html {
   }
 }
 
+/* Game embed */
+.game-box {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.game-frame {
+  width: 100%;
+  height: 600px;
+  border: none;
+  display: block;
+}
+
+.fullscreen-link {
+  text-align: center;
+  margin: 16px 0 0;
+}
+
+.fullscreen-link a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.fullscreen-link a:hover {
+  color: var(--accent-2);
+}
+
+@media (max-width: 700px) {
+  .game-frame {
+    height: 400px;
+  }
+}

@@ -94,7 +94,7 @@ body,html {
   box-sizing:border-box;
 }
 .container {
-  max-width:900px;
+  max-width:1000px;
   margin: 24px auto;
   background:rgba(255,255,255,0.02);
   border-radius:12px;
@@ -262,14 +262,36 @@ body,html {
   color: var(--accent-2);
 }
 
+/* make sure all containers size calculations include padding */
+.container,
 .container-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  gap: 24px;
-  max-width: 900px;
-  margin: 24px auto;
+  box-sizing: border-box;
 }
 
+/* grid wrapper: two columns when space allows, gap and padding handled */
+.container-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* allow columns to shrink */
+  gap: 24px;
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+  width: 100%;
+  align-items: start;
+}
+
+/* ensure inner .container always fills its grid cell and doesn't overflow */
 .container-grid .container {
   margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* responsive breakpoint: force single column on small screens */
+@media (max-width: 700px) {
+  .container-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 12px;
+  }
 }

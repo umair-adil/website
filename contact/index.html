@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <iframe src="/menu.html" class="menu-frame" title="Main menu"></iframe>
+
+    <main class="main">
+<h1 style="text-align:center;">Contact</h1>
+
+<div style="max-width:700px; margin:0 auto; line-height:1.7;">
+  <form
+    action="https://formspree.io/f/xpwongvg"
+    method="POST"
+    style="display:flex; flex-direction:column; gap:16px; background:rgba(255,255,255,0.02); padding:32px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.5);"
+  >
+    <label style="display:flex; flex-direction:column; font-weight:500;">
+      Your name:
+      <input 
+        type="text" 
+        name="name" 
+        style="margin-top:6px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--panel); color:#e6eef2;"
+        required
+      >
+    </label>
+
+    <label style="display:flex; flex-direction:column; font-weight:500;">
+      Your email:
+      <input 
+        type="email" 
+        name="email" 
+        style="margin-top:6px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--panel); color:#e6eef2;"
+        required
+      >
+    </label>
+
+    <label style="display:flex; flex-direction:column; font-weight:500;">
+      Your message:
+      <textarea 
+        name="message" 
+        rows="6"
+        style="margin-top:6px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--panel); color:#e6eef2;"
+        required
+      ></textarea>
+    </label>
+
+    <button 
+      type="submit" 
+      style="padding:16px 20px; border:none; border-radius:8px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#031726; font-size:18px; cursor:pointer; transition:background 0.2s;"
+      onmouseover="this.style.background='linear-gradient(90deg,var(--accent-2),var(--accent))';"
+      onmouseout="this.style.background='linear-gradient(90deg,var(--accent),var(--accent-2))';"
+    >
+      Send
+    </button>
+  </form>
+</div>
+
+    </main>
+  </div>
+</body>
+</html>

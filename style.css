@@ -95,7 +95,7 @@ body,html {
 }
 .container {
   max-width:900px;
-  margin:auto;
+  margin: 24px auto;
   background:rgba(255,255,255,0.02);
   border-radius:12px;
   padding:32px;
@@ -266,4 +266,16 @@ body,html {
   .game-frame {
     height: 400px;
   }
+}
+
+.container-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 24px auto;
+}
+
+.container-grid .container {
+  margin: 0;
 }

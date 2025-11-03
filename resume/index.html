@@ -3,21 +3,117 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resume</title>
+  <title>Resume - Umair Adil</title>
   <link rel="stylesheet" href="/style.css" />
   <script defer src="/script.js"></script>
+  <style>
+  .container ul li {
+    margin-bottom: 6px;
+  }
+</style>
 </head>
 <body>
   <div class="app">
     <iframe src="/menu.html" class="menu-frame" title="Main menu"></iframe>
 
     <main class="main">
+
+      <!-- Header / Summary -->
       <div class="container">
-        <h1>Resume - Umair Adil</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet ipsum vitae justo condimentum dignissim.</p>
-        <img src="image.jpg" alt="Example image" style="width:100%;border-radius:8px;margin:16px 0;">
-        <p>Aliquam erat volutpat. Mauris a porttitor lectus. Cras ut sagittis metus.</p>
+        <section class="hero">
+          <div class="avatar">
+            <img src="/photo.png" alt="Umair Adil" />
+          </div>
+          <div class="hero-right">
+            <h1 class="name">Umair Adil</h1>
+            <p class="role">Computer Science Graduate | Software Developer</p>
+            <p class="role"><a href="https://www.linkedin.com/in/umair-adil/">LinkedIn</a></p>
+          </div>
+        </section>
       </div>
+      <br>
+<div class="container-grid">
+      <!-- Professional Experience -->
+      <div class="container">
+        <h1>Professional Experience</h1><br>
+
+        <h2>SOTI Inc.</h2>
+        <h3>Software Developer Intern</h3>
+        <p><em>Mississauga, ON, Canada | May 2022 - Apr 2023</em></p>
+        <ul>
+          <li>Developed and maintained both frontend (Angular) and backend (C#, .NET) features for the MobiControl product, ensuring scalability, reliability, and high performance.</li>
+          <li>Took the initiative to revamp automated BDD unit tests in Gherkin, optimizing test execution and significantly improving efficiency and simplicity, saving several hours of developer time.</li>
+          <li>Identified and resolved bugs during the development lifecycle, contributing to a robust, error-free product.</li>
+          <li>Worked on unit testing and integration testing of software code using Jasmine and .NET frameworks.</li>
+          <li>Collaborated across teams on all stages of the software development lifecycle, from design and implementation to testing and deployment.</li>
+        </ul>
+      </div>
+
+      <!-- Education -->
+      <div class="container">
+        <h1>Education</h1><br>
+        <h2>York University</h2>
+        <p><strong>BSc (Hons.) Computer Science</strong> -- Sept 2020 – May 2025</p>
+        <ul>
+          <li>Graduated First Class on Dean’s Honour Roll</li>
+          <li>GPA: 7.94 / 9.00 (~3.8 / 4.0)</li>
+          <li>Recipient of multiple merit-based scholarships (2020, 2021, 2023)</li>
+        </ul>
+      </div>
+</div>
+
+<div class="container-grid">
+      <!-- Academic Experience -->
+      <div class="container">
+        <h1>Academic Experience</h1><br>
+        <h2>Indicium - STEM Fellowship</h2>
+        <h3>Research Mentorship</h3>
+        <p><em>Jan 2025 - May 2025</em></p>
+        <ul>
+          <li>Worked under the mentorship of distinguished professor at York University on research project in mathematics.</li>
+          <li>Studied patterns in how permutations with partitions evolve under swaps with specific rules.</li>
+          <li>Developed visual matrix representations of k-Bruhat chains using SageMath.</li>
+          <li>Presented research findings at the STEM Fellowship academic conference at University of Toronto.</li>
+        </ul>
+        <br>
+
+        <h2>KGS Cybernetics Society</h2>
+        <h3>Workshop Organizer</h3>
+        <p><em>Aug 2018 - Apr 2019</em></p>
+        <ul>
+          <li>Organized and led workshops teaching HTML, CSS, and JavaScript to high school students.</li>
+        </ul>
+      </div>
+      <!-- Projects -->
+      <div class="container">
+        <h1>Selected Projects</h1><br>
+
+        <h2>Eglinton Fighter</h2>
+        <ul>
+          <li>Built an interactive, playable web game featuring scalable character architecture with FSM-driven AI.</li>
+          <li>Designed reusable hitbox/hurtbox system enabling dynamic combat and extensible enemy behaviors.</li>
+          <li>Developed UI with health bars, XP, and player stats, managing state across characters and levels.</li>
+          <li>Engineered for scalability; currently expanding with new characters, AI behaviors, and combat mechanics.</li>
+        </ul>
+        <br>
+
+        <h2>Dam Control</h2>
+        <ul>
+          <li>Developed a dam-monitoring and management tool to help control water levels by analyzing weather patterns, geographic information, climate conditions, reservoir levels, and historical trends.</li>
+          <li>Trained a machine learning model on real-world dam data to recommend inflow/outflow rate of a dam.</li>
+          <li>Uses API calls to Google Maps, Open-Meteo, IPapi for real-time data on location and weather to predict expected water levels.</li>
+        </ul>
+      </div>
+</div>
+      <!-- Technologies -->
+      <div class="container">
+        <h1>Technologies</h1><br>
+        <p><strong>Languages:</strong> Java, C, C++, Python, HTML/CSS/JavaScript, VB.NET, SQL, RISC-V, MATLAB, Sage</p>
+        <p><strong>Frameworks:</strong> JUnit, .NET, React, Angular, Jasmine</p>
+        <p><strong>Tools:</strong> VS Code, Visual Studio, Eclipse, GitHub, SageMath, Jira (Scrum), Excel</p>
+        <p>(Note: This is not a complete list. These are just the technologies I have the most exposure to.)</p>
+      </div>
+
     </main>
 
     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">≡</button>
@@ -25,4 +121,3 @@
   </div>
 </body>
 </html>
-

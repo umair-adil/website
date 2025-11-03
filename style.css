@@ -234,7 +234,7 @@ body,html {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   height: 100%;
-  max-height: 90%;
+  max-height: 80vh;
 }
 
 .game-frame {
@@ -260,12 +260,6 @@ body,html {
 
 .fullscreen-link a:hover {
   color: var(--accent-2);
-}
-
-@media (max-width: 700px) {
-  .game-frame {
-    height: 400px;
-  }
 }
 
 .container-grid {

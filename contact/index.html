@@ -6,6 +6,7 @@
   <title>Contact</title>
   <link rel="stylesheet" href="/style.css" />
   <script defer src="/script.js"></script>
+  <script src="email.js" defer></script>
 </head>
 <body>
   <div class="app">
@@ -15,10 +16,19 @@
 <h1 style="text-align:center;">Contact</h1>
 
 <div style="max-width:700px; margin:0 auto; line-height:1.7;">
+
+      <h3>
+        Email: <span id="email-container" class="email-obf" aria-label="Email address">loading...</span>
+        <button id="copy-email-btn" type="button">Copy</button>
+      </h3>
+      <h3>
+        LinkedIn: <a href="https://www.linkedin.com/in/umair-adil/">umair-adil</a>
+      </h3>
+
   <form
     action="https://formspree.io/f/xpwongvg"
     method="POST"
-    style="display:flex; flex-direction:column; gap:16px; background:rgba(255,255,255,0.02); padding:32px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.5);"
+    style="display:flex; flex-direction:column; gap:16px; background:rgba(255,255,255,0.02); padding:32px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.5); margin-top: 100px;"
   >
     <label style="display:flex; flex-direction:column; font-weight:500;">
       Your name:

@@ -1,33 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Game</title>
-  <link rel="stylesheet" href="/style.css" />
-  <script defer src="/script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Fullscreen</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      overflow: hidden; /* Prevent scrollbars */
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <div class="app">
-    <iframe src="/menu.html" class="menu-frame" title="Main menu"></iframe>
-
-    <main class="main">
-      <div class="game-box">
-        <iframe 
-          src="/game/fullscreen" 
-          class="game-frame" 
-          title="Web Game"
-          allowfullscreen>
-        </iframe>
-      </div> 
-      <p class="fullscreen-link">
-        <a href="/game/fullscreen" target="_blank">Click here to play in full screen</a>
-      </p>
-    </main>
-
-    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">≡</button>
-    <div class="overlay" id="overlay"></div>
-  </div>
+  <iframe src="https://umair-adil.github.io/game/"></iframe>
 </body>
 </html>
-

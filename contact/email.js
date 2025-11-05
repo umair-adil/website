@@ -11,11 +11,9 @@
 */
 
 (function () {
-  // Encoded array and key (both safe to expose here)
   var _enc = [120,66,56,100,93,119,121,71,60,35,78,61,100,67,25,106,66,56,100,67,119,110,64,52];
   var _key = [13, 47, 89];
 
-  // decode into string
   function _decode(enc, key) {
     var out = new Array(enc.length);
     for (var i = 0; i < enc.length; i++) {
@@ -24,86 +22,63 @@
     return out.join('');
   }
 
-  // Safe writing to DOM: create text node (not innerHTML)
   function _placeEmail(target) {
     if (!target) return false;
-    // Avoid duplicating if already filled
     if (target.dataset.filled === '1') return true;
 
     var email = _decode(_enc, _key);
-
-    // Insert as text node 
     var tn = document.createTextNode(email);
-    // Clear existing children, then append text node
+
     while (target.firstChild) target.removeChild(target.firstChild);
     target.appendChild(tn);
-    // mark as filled
     target.dataset.filled = '1';
 
     return true;
   }
 
-  // Try to find intended targets:
-  function _findAndPlace() {
-    // Primary: element with id="email-container"
-    var primary = document.getElementById('email-container');
-    if (primary) 
-        setTimeout(function() {
-            _placeEmail(primary);
-        }, 300);
-
-    // Secondary: any elements with class "email-obf"
-    var els = document.getElementsByClassName('email-obf');
-    for (var i = 0; i < els.length; i++) {
-    setTimeout(function() {
-      _placeEmail(el);
-    }, 300);
-    }
-  }
-
-  // Defer placement until DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', _findAndPlace, false);
-  } else {
-    _findAndPlace();
-  }
-
-  // (Optional) expose a safe function if you need to programmatically insert:
+  // Expose function globally so button click can trigger it
   window.__insertObfEmail = _placeEmail;
-})();
 
+  // On DOM ready
+  function _init() {
+    var btn = document.getElementById('copy-email-btn');
+    var emailContainer = document.getElementById('email-container');
+    if (!btn || !emailContainer) return;
 
+    // Start with "Reveal" text
+    btn.textContent = 'Reveal';
 
+    // First click reveals email, then changes button to copy behavior
+    btn.addEventListener('click', function revealHandler() {
+      if (!emailContainer.dataset.filled) {
+        _placeEmail(emailContainer);
+        btn.textContent = 'Copy';
 
-
-
-
-
-
-
-document.getElementById('copy-email-btn').addEventListener('click', function() {
-    var emailEl = document.getElementById('email-container');
-    if (!emailEl) return;
-
-    // Copy text to clipboard
-    navigator.clipboard.writeText(emailEl.textContent).then(function() {
-        var btn = document.getElementById('copy-email-btn');
-    var originalText = btn.textContent;
-    btn.textContent = 'Copied!';
-
-    // Revert back after 2 seconds
-    setTimeout(function() {
-        btn.textContent = originalText;
-    }, 2000);
-    }, function(err) {
-        console.error('Failed to copy email: ', err);
-        var btn = document.getElementById('copy-email-btn');
-        var originalText = btn.textContent;
-        btn.textContent = 'Sorry, failed to copy to clipboard';
-
-    // Revert back after 2 seconds
-    setTimeout(function() {
-        btn.textContent = originalText;
-    }, 2000);
+        // Replace this listener with copy functionality
+        btn.removeEventListener('click', revealHandler);
+        btn.addEventListener('click', function copyHandler() {
+          navigator.clipboard.writeText(emailContainer.textContent).then(function () {
+            var originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(function () {
+              btn.textContent = originalText;
+            }, 2000);
+          }, function (err) {
+            console.error('Failed to copy email: ', err);
+            var originalText = btn.textContent;
+            btn.textContent = 'Sorry, failed to copy';
+            setTimeout(function () {
+              btn.textContent = originalText;
+            }, 2000);
+          });
+        });
+      }
     });
-});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _init, false);
+  } else {
+    _init();
+  }
+})();

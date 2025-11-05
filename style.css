@@ -136,7 +136,7 @@ body,html {
 .button-row {
   display:flex;
   flex-wrap:wrap;
-  gap:20px;
+  gap:30px;
   justify-content: center;
   margin-top: 40px;
   max-width: 900px;
@@ -144,17 +144,41 @@ body,html {
   padding: 0 32px;
   box-sizing: border-box;
 }
-.btn {
-  text-decoration:none;
-  color:#e6eef2;
-  padding:10px 14px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.1);
-  flex: 1 1 200px;
+
+.imgbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* text under image */
+  gap: 8px; /* space between image and text */
   text-align: center;
-  font-size: 18px; 
-  padding: 16px 20px;
+  padding: 0; /* remove extra padding */
+  flex: 1 1 200px;
+  border-radius: 8px;
+  background: none;
+  max-width: 200px;
+  text-decoration: none;
+  color: inherit;
 }
+
+.imgbtn img {
+  height: 150px;
+  width: auto;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+.game-btn img {
+  content: url('character.png');
+  image-rendering: pixelated;
+}
+.game-btn:hover img {
+  content: url('character-hover.png');
+  image-rendering: pixelated;
+}
+.resume-btn:hover img {
+  content: url('resume-hover.png');
+}
+
 .btn.primary {
   background:linear-gradient(90deg,var(--accent),var(--accent-2));
   color:#031726;

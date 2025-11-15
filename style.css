@@ -326,3 +326,38 @@ body,html {
   border-top: 1px solid rgba(255,255,255,0.1);
   margin: 8px 0;
 }
+
+/*For tooltips (question mark hover boxes)*/
+.term {
+  position: relative;
+  display: inline-block;
+}
+
+.help {
+  cursor: pointer;
+  color: red;
+  font-size: 0.7em;
+}
+
+.tooltip {
+  position: absolute;
+  /*left: 100%;*/
+  right:0;
+  width:300%;
+  max-width: 80vw;
+  white-space: normal;
+  top: -5px;
+  background: #fff;
+  color:#000000;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  
+}
+
+.term:focus-within .tooltip,
+.term:hover .tooltip {
+  display: block;
+}

@@ -212,8 +212,8 @@ body,html {
   .mobile-menu-btn {
     display:flex;
     position:fixed;
-    bottom:20px;
-    right:20px;
+    top:20px;
+    left:20px;
     width:56px;
     height:56px;
     border:none;

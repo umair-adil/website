@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Puzzle</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script defer src="/script.js"></script>
+  <style>
+    #answer {
+        padding: 12px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        color: #e6eef2;
+        outline: none;
+        width: 100%;
+        max-width: 300px;
+        box-sizing: border-box;
+        margin-top: 10px;
+        transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    #answer:focus {
+        border: 1px solid var(--accent);
+        box-shadow: 0 0 0 2px rgba(209,213,219,0.15);
+    }
+
+    #submitAnswerButton {
+        margin-left: 10px;
+        padding: 12px 18px;
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(90deg,var(--accent),var(--accent-2));
+        color: #031726;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s, opacity 0.2s;
+    }
+
+    #submitAnswerButton:hover {
+        opacity: 0.9;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    #submitAnswerButton:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <iframe src="/menu.html" class="menu-frame" title="Main menu"></iframe>
+
+    <main class="main">
+    <div style="max-width:700px; margin:0 auto; line-height:1.7;">
+      <h1 style="text-align:center;">Puzzle Placeholder Page</h1>
+
+      <p>
+        This is a testing page for a future puzzle I am considering placing 
+        on this website. The puzzle uses front-end cryptography to avoid
+        people just using "inspect element" to find the answer or to skip
+        to the finish screen. The encrypted data is loaded from a json file,
+        and only the correct answer to one question can decrypt the next question.
+      </p>
+
+      <h2>Sample Puzzle</h2>
+      
+      <h2 id="question"></h2>
+
+      <input id="answer" placeholder="Enter answer" />
+      <button id="submitAnswerButton" onclick="submitAnswer()">Submit</button>
+
+      <p id="message"></p>
+
+      <script src="puzzledecryptor.js"></script>
+
+    </div>
+    </main>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">≡</button>
+    <div class="overlay" id="overlay"></div>
+  </div>
+</body>
+</html>

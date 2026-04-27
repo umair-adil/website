@@ -58,16 +58,25 @@ async function decrypt(data, password) {
 }
 
 async function unlock() {
+  document.getElementById("msg").innerText = "Checking...";
   const password = document.getElementById("password").value;
   const data = await loadEncrypted();
 
-  const html = await decrypt(data, password);
+  let success = null;
+  for (const entry of data) {
+    const result = await decrypt(entry, password);
+    if (result) {
+      success = result;
+      break;
+    }
+  }
 
-  if (!html) {
+  if (!success) {
     document.getElementById("msg").innerText = "Wrong password";
     return;
   }
 
+
   // Render decrypted HTML
-  document.getElementById("content").innerHTML = html;
+  document.getElementById("content").innerHTML = success;
 }

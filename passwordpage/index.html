@@ -15,8 +15,10 @@
 
         <div id="content">
             <h2>Enter Password</h2>
-            <input type="password" id="password" />
-            <button onclick="unlock()">Unlock</button>
+            <form onsubmit="unlock(); return false;">
+                <input type="password" id="password" />
+                <button type="submit">Unlock</button>
+            </form>
 
             <p id="msg"></p>
         </div>

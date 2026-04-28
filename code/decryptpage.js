@@ -1,6 +1,11 @@
-async function loadEncrypted() {
-  const res = await fetch("secure.json");
-  return await res.json();
+let encryptedDataPromise = null; //so that the file only calls GET API once
+let isUnlocking = false; //this is to prevent multiple concurrent calls
+
+function loadEncrypted() {
+  if (!encryptedDataPromise) {
+    encryptedDataPromise = fetch("secure.json").then(res => res.json());
+  }
+  return encryptedDataPromise;
 }
 
 function base64ToArrayBuffer(base64) {
@@ -58,28 +63,35 @@ async function decrypt(data, password) {
 }
 
 async function unlock() {
-  document.getElementById("msg").innerText = "Checking code...";
-  const password = document.getElementById("password").value;
-  const data = await loadEncrypted();
+  if (isUnlocking) return; // ignore extra calls
 
-  let success = null;
-  for (const entry of data) {
-    const result = await decrypt(entry, password);
-    if (result) {
-      success = result;
-      break;
+  isUnlocking = true;
+
+  try {
+    document.getElementById("msg").innerText = "Checking code...";
+    const password = document.getElementById("password").value;
+    const data = await loadEncrypted();
+
+    let success = null;
+    for (const entry of data) {
+      const result = await decrypt(entry, password);
+      if (result) {
+        success = result;
+        break;
+      }
     }
-  }
 
-  if (!success) {
-    document.getElementById("msg").innerText = "Invalid code";
-    return;
-  }
-  else{
-    document.getElementById("msg").innerText = "Code was found but could not render. This means there is an error.";
-  }
+    if (!success) {
+      document.getElementById("msg").innerText = "Invalid code";
+      return;
+    } else {
+      document.getElementById("msg").innerText = "Code was found but could not render. This means there is an error.";
+    }
 
+    //render returned HTML
+    document.getElementById("content").innerHTML = success;
 
-  // Render decrypted HTML
-  document.getElementById("content").innerHTML = success;
+  } finally {
+    isUnlocking = false; // always release lock
+  }
 }

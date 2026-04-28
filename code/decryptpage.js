@@ -58,7 +58,7 @@ async function decrypt(data, password) {
 }
 
 async function unlock() {
-  document.getElementById("msg").innerText = "Checking...";
+  document.getElementById("msg").innerText = "Checking code...";
   const password = document.getElementById("password").value;
   const data = await loadEncrypted();
 
@@ -72,8 +72,11 @@ async function unlock() {
   }
 
   if (!success) {
-    document.getElementById("msg").innerText = "Wrong password";
+    document.getElementById("msg").innerText = "Invalid code";
     return;
+  }
+  else{
+    document.getElementById("msg").innerText = "Code was found but could not render. This means there is an error.";
   }
 
 

@@ -13,7 +13,7 @@ const pages = [
 ];
 
 function deriveKey(password, salt) {
-  return crypto.pbkdf2Sync(password, salt, 100000, 32, "sha256");
+  return crypto.pbkdf2Sync(password, salt, 1000000, 32, "sha256");
 }
 
 function encrypt(text, password) {

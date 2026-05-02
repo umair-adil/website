@@ -17,7 +17,7 @@ function base64ToArrayBuffer(base64) {
   return bytes;
 }
 
-async function deriveKey(password, salt) {
+async function deriveKey(password, salt, iterations) {
   const enc = new TextEncoder();
 
   const keyMaterial = await crypto.subtle.importKey(
@@ -32,7 +32,7 @@ async function deriveKey(password, salt) {
     {
       name: "PBKDF2",
       salt: salt,
-      iterations: 1000000,
+      iterations: iterations,
       hash: "SHA-256"
     },
     keyMaterial,
@@ -42,13 +42,10 @@ async function deriveKey(password, salt) {
   );
 }
 
-async function decrypt(data, password) {
+async function decrypt(data, key) {
   try {
     const iv = base64ToArrayBuffer(data.iv);
-    const salt = base64ToArrayBuffer(data.salt);
     const ciphertext = base64ToArrayBuffer(data.ciphertext);
-
-    const key = await deriveKey(password, salt);
 
     const decrypted = await crypto.subtle.decrypt(
       { name: "AES-GCM", iv: iv },
@@ -70,11 +67,16 @@ async function unlock() {
   try {
     document.getElementById("msg").innerText = "Checking code...";
     const password = document.getElementById("password").value;
-    const data = await loadEncrypted();
+    const filedata = await loadEncrypted();
+
+    const data = filedata.data;
+    const salt = base64ToArrayBuffer(filedata.salt);
+    const iterations = filedata.iterations;
+    const key = await deriveKey(password, salt, iterations);
 
     let success = null;
     for (const entry of data) {
-      const result = await decrypt(entry, password);
+      const result = await decrypt(entry, key);
       if (result) {
         success = result;
         break;

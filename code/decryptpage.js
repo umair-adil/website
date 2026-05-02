@@ -59,6 +59,25 @@ async function decrypt(data, key) {
   }
 }
 
+function activateScripts(container) {
+  const scripts = container.querySelectorAll("script");
+
+  scripts.forEach(oldScript => {
+    const newScript = document.createElement("script");
+
+    // copy attributes (e.g., src, type)
+    for (const attr of oldScript.attributes) {
+      newScript.setAttribute(attr.name, attr.value);
+    }
+
+    // copy inline script content
+    newScript.textContent = oldScript.textContent;
+
+    // replace old script with new one (this triggers execution)
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
+}
+
 async function unlock() {
   if (isUnlocking) return; // ignore extra calls
 
@@ -90,8 +109,12 @@ async function unlock() {
       document.getElementById("msg").innerText = "Code was found but could not render. This means there is an error.";
     }
 
-    //render returned HTML
-    document.getElementById("content").innerHTML = success;
+    // render returned HTML
+    const contentEl = document.getElementById("content");
+    contentEl.innerHTML = success;
+
+    // activate any scripts inside it
+    activateScripts(contentEl);
 
   } finally {
     isUnlocking = false; // always release lock

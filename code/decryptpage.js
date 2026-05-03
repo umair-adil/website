@@ -120,3 +120,8 @@ async function unlock() {
     isUnlocking = false; // always release lock
   }
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadEncrypted(); // start fetching early
+});

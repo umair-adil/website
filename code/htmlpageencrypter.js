@@ -1,10 +1,6 @@
 const crypto = require("crypto");
 const fs = require("fs");
-const numberofiterations = 1000000;
-
-//old way to encrypt just one page
-//const password = "idontwantanyonetobeabletoreadthispage";
-//const html = fs.readFileSync("lockedpage.html", "utf8");
+const numberofiterations = 3000000;
 
 //encrypting multiple pages
 const pages = [
@@ -19,7 +15,6 @@ function deriveKey(password, salt) {
 
 function encrypt(text, password, salt) {
   const iv = crypto.randomBytes(12);
-  //const salt = crypto.randomBytes(16);
   const key = deriveKey(password, salt);
 
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
@@ -29,13 +24,9 @@ function encrypt(text, password, salt) {
   return {
     ciphertext: Buffer.concat([encrypted, tag]).toString("base64"),
     iv: iv.toString("base64"),
-    //salt: salt.toString("base64")
   };
 }
 
-//old way to encrypt only one page
-//const encrypted = encrypt(html, password);
-//fs.writeFileSync("secure.json", JSON.stringify(encrypted, null, 2));
 
 const data = [];
 const salt = crypto.randomBytes(16);

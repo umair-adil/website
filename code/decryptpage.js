@@ -1,6 +1,17 @@
 let encryptedDataPromise = null; //so that the file only calls GET API once
 let isUnlocking = false; //this is to prevent multiple concurrent calls
 
+function handleCodeFromUrl() {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  const code = decodeURIComponent(hash.substring(1));
+
+  const contentEl = document.getElementById("content");
+  contentEl.innerHTML = "<h1>Loading...</h1>";
+  unlock(code);
+}
+
 function loadEncrypted() {
   if (!encryptedDataPromise) {
     encryptedDataPromise = fetch("secure.json").then(res => res.json());
@@ -78,14 +89,16 @@ function activateScripts(container) {
   });
 }
 
-async function unlock() {
+async function unlock(passwordOverride = null) {
   if (isUnlocking) return; // ignore extra calls
 
   isUnlocking = true;
 
   try {
-    document.getElementById("msg").innerText = "Checking code...";
-    const password = document.getElementById("password").value;
+    if(!passwordOverride){
+      document.getElementById("msg").innerText = "Checking code...";
+    }
+    const password = passwordOverride ?? document.getElementById("password").value;
     const filedata = await loadEncrypted();
 
     const data = filedata.data;
@@ -103,10 +116,12 @@ async function unlock() {
     }
 
     if (!success) {
-      document.getElementById("msg").innerText = "Invalid code";
+      if (passwordOverride) {
+        document.getElementById("content").innerHTML = "<h1>Not found</h1> <p>This means your link is incorrect or has been removed</p>";
+      } else {
+        document.getElementById("msg").innerText = "Invalid code";
+      }
       return;
-    } else {
-      document.getElementById("msg").innerText = "Code was found but could not render. This means there is an error.";
     }
 
     // render returned HTML
@@ -123,5 +138,8 @@ async function unlock() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadEncrypted(); // start fetching early
+  loadEncrypted();
+  handleCodeFromUrl();
 });
+
+window.addEventListener("hashchange", handleCodeFromUrl);

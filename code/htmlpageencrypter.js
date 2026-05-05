@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const fs = require("fs");
-const numberofiterations = 3000000;
+const numberofiterations = 5000000;
 
 //encrypting multiple pages
 const pages = [

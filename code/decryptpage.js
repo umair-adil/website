@@ -53,21 +53,55 @@ async function deriveKey(password, salt, iterations) {
   );
 }
 
-async function decrypt(data, key) {
+async function decryptAESGCM(data, key) {
   try {
     const iv = base64ToArrayBuffer(data.iv);
     const ciphertext = base64ToArrayBuffer(data.ciphertext);
 
-    const decrypted = await crypto.subtle.decrypt(
+    return await crypto.subtle.decrypt(
       { name: "AES-GCM", iv: iv },
       key,
       ciphertext
     );
-
-    return new TextDecoder().decode(decrypted);
   } catch {
     return null;
   }
+}
+
+async function decrypt(data, key) {
+  const result = await decryptAESGCM(data, key);
+  return result ? new TextDecoder().decode(result) : null;
+}
+
+async function decryptRaw(data, key) {
+  return await decryptAESGCM(data, key);
+}
+
+async function unwrapMainKey(wrappedKeys, derivedKey) {
+  for (const wrapped of wrappedKeys) {
+    const rawKey = await decryptRaw(wrapped, derivedKey);
+    if (rawKey) {
+      return crypto.subtle.importKey(
+        "raw",
+        rawKey,
+        { name: "AES-GCM" },
+        false,
+        ["decrypt"]
+      );
+    }
+  }
+  return null;
+}
+
+async function findDecryptedPage(data, key) {
+  for (const entry of data) {
+    const mainKey = await unwrapMainKey(entry.wrappedKeys, key);
+    if (!mainKey) continue;
+
+    const result = await decrypt(entry.pageData, mainKey);
+    if (result) return result;
+  }
+  return null;
 }
 
 function activateScripts(container) {
@@ -106,14 +140,7 @@ async function unlock(passwordOverride = null) {
     const iterations = filedata.iterations;
     const key = await deriveKey(password, salt, iterations);
 
-    let success = null;
-    for (const entry of data) {
-      const result = await decrypt(entry, key);
-      if (result) {
-        success = result;
-        break;
-      }
-    }
+    const success = await findDecryptedPage(data, key);
 
     if (!success) {
       if (passwordOverride) {

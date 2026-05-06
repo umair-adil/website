@@ -1,40 +1,55 @@
+const numberofiterations = 5000000; //PBKDF2 iterations; increase for better security or decrease for faster performance
+const pages = [
+  { file: "lockedpage.html", passwords: ["password1"] },
+  { file: "lockedpage2.html", passwords: ["password2"] },
+  { file: "lockedpage3.html", passwords: ["password3", "password4"] },
+];
+
 const crypto = require("crypto");
 const fs = require("fs");
-const numberofiterations = 5000000;
-
-//encrypting multiple pages
-const pages = [
-  { file: "lockedpage.html", password: "REDACTED" },
-  { file: "lockedpage2.html", password: "REDACTED2" },
-  { file: "lockedpage3.html", password: "REDACTED3" }
-];
 
 function deriveKey(password, salt) {
   return crypto.pbkdf2Sync(password, salt, numberofiterations, 32, "sha256");
 }
 
-function encrypt(text, password, salt) {
+function encryptAESGCM(key, plaintext, inputEncoding = null) {
   const iv = crypto.randomBytes(12);
-  const key = deriveKey(password, salt);
-
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
-  const encrypted = Buffer.concat([cipher.update(text, "utf8"), cipher.final()]);
+
+  const encrypted = inputEncoding
+    ? Buffer.concat([cipher.update(plaintext, inputEncoding), cipher.final()])
+    : Buffer.concat([cipher.update(plaintext), cipher.final()]);
+
   const tag = cipher.getAuthTag();
 
   return {
     ciphertext: Buffer.concat([encrypted, tag]).toString("base64"),
-    iv: iv.toString("base64"),
+    iv: iv.toString("base64")
   };
 }
 
+function encryptKeyWithPassword(mainKey, password, salt) {
+  const key = deriveKey(password, salt);
+  return encryptAESGCM(key, mainKey);
+}
+
+function encryptPageWithMainKey(mainKey, html){
+  return encryptAESGCM(mainKey, html, "utf8");
+}
 
 const data = [];
 const salt = crypto.randomBytes(16);
 
 for (const p of pages) {
-  const html = fs.readFileSync(p.file, "utf8");
-  const encrypted = encrypt(html, p.password, salt);
-  data.push(encrypted);
+  const html = fs.readFileSync(p.file, "utf8"); //read the page
+  const mainKey = crypto.randomBytes(32); //generate main key for encrypting this page
+  const encryptedData = encryptPageWithMainKey(mainKey, html) //encrypt page with main key
+  const wrappedKeys = p.passwords.map(password => encryptKeyWithPassword(mainKey, password, salt)); //encrypt main key with each valid password
+
+  data.push({
+    pageData: encryptedData,
+    wrappedKeys: wrappedKeys
+  });
 }
 
 const output = {

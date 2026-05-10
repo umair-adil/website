@@ -58,5 +58,11 @@ const output = {
   data: data,
 }
 
-//commented this out so I don't accidentally destroy my data by running this
-//fs.writeFileSync("secure.json", JSON.stringify(output, null, 2));
+if (!fs.existsSync("secure.json")) {
+  createJsonWithData();
+  console.log("secure.json written");
+}
+else{
+  console.error("ERROR: secure.json already exists. Refusing to continue to protect against overwriting data.");
+  console.error("In order to continue, delete secure.json or move it somewhere else instead (backup recommended).");
+}

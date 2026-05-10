@@ -1,7 +1,7 @@
 // HOW TO USE:
 //
 // Place your HTML files in the same folder/directory as this file (encrypter.js)
-// Then run "node htmlpageencrypter.js" in that same folder/directory
+// Then run "node encrypter.js" in that same folder/directory
 // Follow the instructions on the console to add all the pages and passwords
 // Finally, publish the index.html, decryptpage.js and secure.json files together
 // DO NOT publish the rest

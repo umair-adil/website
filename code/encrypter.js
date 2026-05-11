@@ -86,10 +86,27 @@ async function askQuestion(rl, question) {
   });
 }
 
-function exitWorkflow(rl, message = null) {
+async function exitWorkflow(rl, message = null, isError = true) {
 
   if (message) {
-    console.log(message);
+    if(isError){
+      console.log(`\n\x1b[31mERROR:\x1b[0m ${message}`);
+    }
+    else{
+      console.log(`\n\x1b[32mSUCCESS:\x1b[0m ${message}`);
+    }
+  }
+
+  console.log("\nChoose an option:");
+  console.log("1. Return to main menu");
+  console.log("2. Exit");
+
+  const answer = await askQuestion(rl, "> ");
+
+  if (answer === "1") {
+    console.log("");
+    showMenu(rl);
+    return;
   }
 
   rl.close();
@@ -148,17 +165,17 @@ async function passwordStorageQuestion(rl) {
       console.log(`\nI acknowledge that ${PASSWORDS_FILE} MUST BE KEPT PRIVATE and any leak is permanently irrevocable.`);      
       const acknowledge = await askQuestion(rl, "\tType 'I acknowledge' to continue: ");
       if (acknowledge === "I acknowledge") return true;
-      console.log("Acknowledgement declined.\n");
+      console.log(`\n\x1b[31mAcknowledgement declined\x1b[0m`);
     }
 
     else if (answer === "2") {
       console.log("\nI acknowledge that if I forget my passwords, the encrypted files will not be recoverable without the original files.");
       const acknowledge = await askQuestion(rl, "\tType 'I acknowledge' to continue: ");
       if (acknowledge === "I acknowledge") return false;
-      console.log("Acknowledgement declined.\n");
+      console.log(`\n\x1b[31mAcknowledgement declined\x1b[0m`);
     }
     else {
-      console.log("\tInvalid option.\n");
+      console.log(`\n\x1b[31mInvalid option\x1b[0m`);
     }
   }
 }
@@ -283,7 +300,7 @@ async function addNewPageWorkflow(rl) {
   saveSecureJson(secureData);
   savePasswordsFileIfExists(passwordData);
 
-  return exitWorkflow(rl, "Page added successfully.");
+  return exitWorkflow(rl, "Page added successfully.", false);
 }
 
 async function removePageWorkflow(rl) {
@@ -320,7 +337,7 @@ async function removePageWorkflow(rl) {
   saveSecureJson(secureData);
   savePasswordsFileIfExists(passwordData);
 
-  return exitWorkflow(rl, "Page removed successfully.");
+  return exitWorkflow(rl, "Page removed successfully.", false);
 }
 
 async function addPasswordWorkflow(rl) {
@@ -361,7 +378,7 @@ async function addPasswordWorkflow(rl) {
   saveSecureJson(secureData);
   savePasswordsFileIfExists(passwordData);
 
-  return exitWorkflow(rl, "Password added successfully.");
+  return exitWorkflow(rl, "Password added successfully.", false);
 }
 
 async function removePasswordWorkflow(rl) {
@@ -401,7 +418,7 @@ async function removePasswordWorkflow(rl) {
   saveSecureJson(secureData);
   savePasswordsFileIfExists(passwordData);
 
-  return exitWorkflow(rl, "Password removed successfully.");
+  return exitWorkflow(rl, "Password removed successfully.", false);
 }
 
 async function changePasswordWorkflow(rl) {
@@ -456,7 +473,7 @@ async function changePasswordWorkflow(rl) {
 
   saveSecureJson(secureData);
   savePasswordsFileIfExists(passwordData);
-  return exitWorkflow(rl, "Password changed successfully.");
+  return exitWorkflow(rl, "Password changed successfully.", false);
 }
 
 async function updatePageWorkflow(rl) {
@@ -494,7 +511,7 @@ async function updatePageWorkflow(rl) {
 
   saveSecureJson(secureData);
 
-  return exitWorkflow(rl, "Page updated successfully.");
+  return exitWorkflow(rl, "Page updated successfully.", false);
 }
 
 async function reEncryptPageWorkflow(rl) {
@@ -551,7 +568,7 @@ async function reEncryptPageWorkflow(rl) {
   saveSecureJson(secureData);
   savePasswordsFileIfExists(passwordData);
 
-  return exitWorkflow(rl, "Page re-encrypted successfully.");
+  return exitWorkflow(rl, "Page re-encrypted successfully.", false);
 }
 
 function showMenu(rl) {
@@ -565,6 +582,7 @@ function showMenu(rl) {
   console.log("5. Change a password");
   console.log("6. Update a page");
   console.log("7. Re-encrypt an existing page");
+  console.log("8. Exit");
 
   rl.question("> ", (answer) => {
 
@@ -597,11 +615,15 @@ function showMenu(rl) {
         reEncryptPageWorkflow(rl);
         return;
 
-      default:
-        console.log("Invalid option");
-    }
+      case "8":
+        rl.close();
+        return;
 
-    rl.close();
+      default:
+        console.log("Invalid option\n");
+        showMenu(rl);
+        return;
+    }
   });
 }
 
